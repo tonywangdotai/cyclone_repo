@@ -20,7 +20,7 @@ jobs:
           url: "http://172.16.43.249:9122/ext/api/v2/processService/running?processServiceId=2448745516712192&accessKey=rYlwhLmN&signature=yXURFJRoGmWvfO89HW0cfoT8GnQ%3D&signatureMethod=1.0"
           method: POST
           contentType: application/json
-          data: "{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}"
+          data: "{\"params\": [],\"output\": [],\"version\": \"v1.0.8\",\"comments\": \"test\",\"resolution\": \"1920x1080\",\"outputParams\": [],\"assignUser\": \"\"}"
           customHeaders: |
             {
               "Content-Type": "application/json"

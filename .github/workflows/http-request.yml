@@ -2,36 +2,33 @@ name: Trigger HTTP POST Request on Push or Pull Request
 
 on:
   push:
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
-  trigger-http-post-request:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # Step 2: Trigger HTTP POST request
-      - name: Trigger HTTP POST request
+      - name: HTTP Request Action
+        id: trigger_tests  # Assign an ID to reference the output
+        uses: fjogeleit/http-request-action@v1.15.5
+        with:
+          url: "http://172.16.43.249:9122/ext/api/v2/processService/running?processServiceId=2448745516712192&accessKey=rYlwhLmN&signature=yXURFJRoGmWvfO89HW0cfoT8GnQ%3D&signatureMethod=1.0"
+          method: POST
+          contentType: application/json
+          data: "{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}"
+          customHeaders: |
+            {
+              "Content-Type": "application/json"
+            }
+          timeout: 100000  # Optional timeout in milliseconds (100 seconds)
+
+      # Log the API response and status code
+      - name: Log API Response and Status Code
         run: |
-          # Replace this with your desired POST URL
-          URL="http://172.16.43.249:9122/ext/api/v2/processService/running?processServiceId=2448745516712192&accessKey=rYlwhLmN&signature=yXURFJRoGmWvfO89HW0cfoT8GnQ%3D&signatureMethod=1.0"
-          
-          # Example data to send with the POST request
-          DATA='{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}'
-          
-          # Send the HTTP POST request using curl
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$DATA" $URL)
-          
-          # Print the HTTP status code
-          echo "HTTP Status Code: $RESPONSE"
-
-          # Fail the workflow if the HTTP request fails (status code other than 200)
-          if [ "$RESPONSE" -ne 200 ]; then
-            echo "HTTP request failed with status code $RESPONSE"
-            exit 1
-          else
-            echo "HTTP POST request was successful"
-          fi
+          echo "Status Code: ${{ steps.trigger_tests.outputs.statusCode }}"
+          echo "Response: ${{ steps.trigger_tests.outputs.response }}"

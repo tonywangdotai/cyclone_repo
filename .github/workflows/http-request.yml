@@ -1,11 +1,11 @@
-name: Trigger HTTP Request on Push or Pull Request
+name: Trigger HTTP POST Request on Push or Pull Request
 
 on:
   push:
   pull_request:
 
 jobs:
-  trigger-http-request:
+  trigger-http-post-request:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,14 +13,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Make an HTTP request
-      - name: Trigger HTTP request
+      # Step 2: Trigger HTTP POST request
+      - name: Trigger HTTP POST request
         run: |
-          # Replace this with your desired URL
+          # Replace this with your desired POST URL
           URL="http://172.16.43.249:9122/ext/api/v2/processService/running?processServiceId=2448745516712192&accessKey=rYlwhLmN&signature=yXURFJRoGmWvfO89HW0cfoT8GnQ%3D&signatureMethod=1.0"
           
-          # Send the HTTP request using curl
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+          # Example data to send with the POST request
+          # DATA='{"key1":"value1", "key2":"value2"}'
+          DATA - '{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}'
+          
+          # Send the HTTP POST request using curl
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$DATA" $URL)
           
           # Print the HTTP status code
           echo "HTTP Status Code: $RESPONSE"
@@ -30,5 +34,5 @@ jobs:
             echo "HTTP request failed with status code $RESPONSE"
             exit 1
           else
-            echo "HTTP request was successful"
+            echo "HTTP POST request was successful"
           fi

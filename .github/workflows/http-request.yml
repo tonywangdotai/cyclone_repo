@@ -20,8 +20,7 @@ jobs:
           URL="http://172.16.43.249:9122/ext/api/v2/processService/running?processServiceId=2448745516712192&accessKey=rYlwhLmN&signature=yXURFJRoGmWvfO89HW0cfoT8GnQ%3D&signatureMethod=1.0"
           
           # Example data to send with the POST request
-          # DATA='{"key1":"value1", "key2":"value2"}'
-          DATA = '{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}'
+          DATA='{\"params\": [], \"output\": [], \"version\": \"v1.0.8\", \"comments\": \"update\", \"resolution\": \"1920x1080\", \"outputParams\": [], \"assignUser\": \"\"}'
           
           # Send the HTTP POST request using curl
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$DATA" $URL)

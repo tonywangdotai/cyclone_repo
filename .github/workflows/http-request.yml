@@ -2,9 +2,9 @@ name: Trigger HTTP POST Request on Push or Pull Request
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 jobs:
   build:
